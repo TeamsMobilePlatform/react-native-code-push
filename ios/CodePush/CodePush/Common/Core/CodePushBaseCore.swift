@@ -239,9 +239,12 @@ class CodePushBaseCore {
         configuration.deploymentKey = !deploymentKey.isEmpty ? deploymentKey : configuration.deploymentKey
         do {
             let localPackage = try getUpdateMetadata(inUpdateState: .latest)
-            let queryPackage = localPackage != nil ? localPackage :
-                CodePushLocalPackage.createEmptyPackageForUpdateQuery(withVersion: configuration.appVersion)
-
+            var queryPackage = localPackage
+            if !self.appVersion.isEmpty {
+                queryPackage = CodePushLocalPackage.createEmptyPackageForUpdateQuery(withVersion: self.appVersion)
+            } else if queryPackage == nil{
+                queryPackage = CodePushLocalPackage.createEmptyPackageForUpdateQuery(withVersion: configuration.appVersion)
+            }
             CodePushAcquisitionManager(utilities.utils, utilities.fileUtils)
                 .queryUpdate(withConfig: configuration, withPackage: queryPackage!,
                              callback: { result in
