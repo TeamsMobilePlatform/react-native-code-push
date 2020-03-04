@@ -200,7 +200,7 @@ class CodePushBaseCore {
         let config = CodePushConfiguration()
         config.appName = !self.appName.isEmpty ? self.appName : CodePushConstants.CodePushDefaultAppName
         config.appVersion = !self.appVersion.isEmpty ? self.appVersion : try getAppVersion()
-        config.clientUniqueId = UIDevice.current.identifierForVendor!.uuidString
+        config.clientUniqueId = (UIDevice.current.identifierForVendor ?? UUID()).uuidString
         config.deploymentKey = self.deploymentKey
         config.baseDirectory = self.baseDirectory
         config.serverUrl = !self.serverUrl.isEmpty ? self.serverUrl : CodePushConstants.CodePushServer
